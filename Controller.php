@@ -11,6 +11,11 @@ class Controller {
 		$this->app = $app;
 	}
 
+	protected function setHeader($header, $value)
+	{
+		$this->app->response->headers->set($header, $value);
+	}
+
 	protected function setLayout($layout) {
 		$this->app->view->setLayout($layout);
 	}
