@@ -24,6 +24,11 @@ class Controller {
 		return $this->app->render($name, $data);
 	}
 
+	protected function flash($key, $value)
+	{
+		$this->app->flash($key, $value);
+	}
+
 	protected function redirect($url, $params=null) {
 		if ($params !== null) $url = $this->app->urlFor($url, $params);
 		return $this->app->redirect($url);
