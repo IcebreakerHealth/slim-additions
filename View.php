@@ -23,4 +23,10 @@ class View extends \Slim\View {
 		return \Slim\Slim::getInstance()->urlFor($url, $params);
 	}
 
+	protected function render_element($name, $params=array()) {
+		extract($params);
+		$_template_names = explode('/', $name, 2);
+		include(DOC_ROOT . "/App/templates/{$_template_names[0]}/elements/{$_template_names[1]}.php");
+	}
+
 }

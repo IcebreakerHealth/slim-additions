@@ -54,4 +54,8 @@ class Controller {
 		return $this->api;
 	}
 
+	protected function pass() {
+		$this->app->pass();
+	}
+
 }
