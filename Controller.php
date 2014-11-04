@@ -29,6 +29,11 @@ class Controller {
 		$this->app->flash($key, $value);
 	}
 
+	protected function flashNow($key, $value)
+	{
+		$this->app->flashNow($key, $value);
+	}
+
 	protected function redirect($url, $params=null) {
 		if ($params !== null) $url = $this->app->urlFor($url, $params);
 		return $this->app->redirect($url);
