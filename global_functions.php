@@ -37,3 +37,14 @@ function hx($text /*args*/) {
 	array_unshift($args, $text);
 	return call_user_func_array('h', $args);
 }
+
+/**
+ * d
+ *
+ * Takes a timestamp and optional format, outputting in the correct TZ.
+ */
+function d($timestamp, $format_override = false) {
+	$dt = is_numeric($timestamp) ? new DateTime(date("c", $timestamp)) : new DateTime($timestamp);
+	$dt->setTimezone(new DateTimeZone(\Config::DATE_OUTPUT_TZ));
+	return ($format_override === false) ? $dt->format(\Config::DATE_OUTPUT_FORMAT) : $dt->format($format_override);
+}
