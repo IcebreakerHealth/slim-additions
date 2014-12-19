@@ -4,11 +4,10 @@ namespace Framework;
 
 class Controller
 {
-
     private $app;
     private $api;
 
-    function __construct($app)
+    public function __construct($app)
     {
         $this->app = $app;
     }

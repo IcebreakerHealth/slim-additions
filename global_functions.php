@@ -19,7 +19,7 @@ function h($text /*args*/)
     if (count($args) == 1) {
         return htmlspecialchars($text);
     } else {
-        $args = array_map(function($str) { return htmlspecialchars($str);
+        $args = array_map(function ($str) { return htmlspecialchars($str);
 
         }, $args);
         $args[0] = $text;

@@ -4,7 +4,6 @@ namespace Framework;
 
 class View extends \Slim\View
 {
-
     public function setLayout($layout)
     {
         $this->layout = $layout;

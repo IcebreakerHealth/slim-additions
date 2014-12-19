@@ -4,11 +4,10 @@ namespace Framework;
 
 class RouteGenerator
 {
-
     private $controller_cache = array();
     private $app;
 
-    function __construct($app)
+    public function __construct($app)
     {
         $this->app = $app;
     }
