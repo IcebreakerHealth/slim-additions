@@ -11,6 +11,6 @@
         "squizlabs/php_codesniffer": "2.0.*"
     },
     "autoload": {
-        "psr-0": { "SlimAdditions": "src" }
+        "psr-0": { "SlimAdditions": "." }
     }
 }
