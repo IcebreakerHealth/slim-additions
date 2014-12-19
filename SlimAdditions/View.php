@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework;
+namespace SlimAdditions;
 
 class View extends \Slim\View
 {

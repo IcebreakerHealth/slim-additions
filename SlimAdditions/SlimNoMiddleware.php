@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework;
+namespace SlimAdditions;
 
 class SlimNoMiddleware extends \Slim\Slim
 {
