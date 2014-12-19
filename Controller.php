@@ -4,8 +4,7 @@ namespace Framework;
 
 class Controller
 {
-    private $app;
-    private $api;
+    protected $app;
 
     public function __construct($app)
     {
@@ -54,19 +53,6 @@ class Controller
     protected function urlFor($name, $params = array())
     {
         return $this->app->router->urlFor($name, $params);
-    }
-
-    protected function current_user()
-    {
-        return $this->app->current_user;
-    }
-
-    protected function api()
-    {
-        if (!isset($this->api)) {
-            $this->api = new \App\Lib\Api($_COOKIE['Token']);
-        }
-        return $this->api;
     }
 
     protected function pass()
