@@ -4,20 +4,17 @@ namespace SlimAdditions;
 
 class View extends \Slim\View
 {
-    public $DEFAULT_THEME_NAME = "default";
-    private $CURRENT_THEME;
+    private $themes;
 
-    function __construct($theme)
+    public function __construct($themes = null)
     {
         parent::__construct();
-        $this->CURRENT_THEME = $theme;
+        if ($themes == null) {
+            $themes = array('.');
+        }
+        $this->themes = $themes;
+        $this->layout = "layouts/default.php";
     }
-
-    protected function getCurrentThemeName()
-    {
-        return $this->CURRENT_THEME;
-    }
-
 
     public function setLayout($layout)
     {
@@ -28,8 +25,7 @@ class View extends \Slim\View
     {
         $content = parent::render($template, $data);
         $data['content'] = $content;
-        $layout = (isset($this->layout)) ? $this->layout : "layouts/default.php";
-        return parent::render($layout, $data);
+        return parent::render($this->layout, $data);
     }
 
     protected function h($text)
@@ -44,59 +40,33 @@ class View extends \Slim\View
 
     protected function render_element($name, $params = array())
     {
-        extract($params);
-
-        $elementPath = $this->get_theme_element_path($this->getCurrentThemeName(), $name);
-        
-        //check if element exists in current theme
-        if (!is_file($elementPath))
-        {
-            //assign element path to use default theme since it doesn't exist in current theme
-            $elementPath = $this->get_theme_element_path($this->DEFAULT_THEME_NAME, $name);
-        }
-
-        if (!is_file($elementPath)){
-            throw new \RuntimeException("View cannot render `$elementPath` because the element file does not exist");
-        }
-        else{
-            include($elementPath);
-        }
+        print parent::render($this->get_element_name($name), $params);
+        return;
     }
 
     /**
-     * Override the slim implementation of getTemplatePathname($file); to provide a theme specific path if a file in the theme directory exists.
+     * Override the slim implementation of getTemplatePathname($file);
+     * to provide a theme specific path if a file in the theme directory exists.
     */
     public function getTemplatePathname($file)
     {
-
-        $templateDirectory = $this->get_template_directory($this->getCurrentThemeName(), $file);
-
-        //check if template exists in current theme
-        if (!is_file($templateDirectory)){
-            //assign template path to use default theme since it doesn't exist in current theme
-            $templateDirectory = $this->get_template_directory($this->DEFAULT_THEME_NAME, $file);
+        foreach ($this->themes as $dir) {
+            $templateDirectory = $this->get_template_directory($dir, $file);
+            if (is_file($templateDirectory)) {
+                return $templateDirectory;
+            }
         }
         return $templateDirectory;
     }
 
     /**
-     * Retrive the file path of an element by supplying a theme name and element name.
-     *@param $theme         Name of the theme.
-     *@param $element_name  Name of the element you want to retrieve for the given theme.
+     * Retrive the file name of an element.
+     *@param $element_name  Name of the element you want to retrieve.
     */
-    protected function get_theme_element_path($theme, $element_name)
+    protected function get_element_name($element_name)
     {
-        $_template_names = explode('/', $element_name, 2);
-        return $this->get_theme_directory($theme) . "/{$_template_names[0]}/elements/{$_template_names[1]}.php";
-    }
-
-    /**
-     * Retrive the file path to a theme's templates directory by supplying the theme name.
-     *@param $theme     Name of the theme.
-    */
-    protected function get_theme_directory($theme)
-    {
-        return $this->templatesDirectory . "/{$theme}";
+        $template_names = explode('/', $element_name, 2);
+        return "/{$template_names[0]}/elements/{$template_names[1]}.php";
     }
 
     /**
@@ -106,6 +76,8 @@ class View extends \Slim\View
     */
     protected function get_template_directory($theme, $file)
     {
-        return $this->get_theme_directory($theme) . DIRECTORY_SEPARATOR . ltrim($file, DIRECTORY_SEPARATOR);
+        return $this->templatesDirectory .
+            DIRECTORY_SEPARATOR . $theme .
+            DIRECTORY_SEPARATOR . ltrim($file, DIRECTORY_SEPARATOR);
     }
 }
