@@ -56,3 +56,18 @@ function d($timestamp, $format_override = false)
     $dt->setTimezone(new DateTimeZone(\Config::DATE_OUTPUT_TZ));
     return ($format_override === false) ? $dt->format(\Config::DATE_OUTPUT_FORMAT) : $dt->format($format_override);
 }
+
+function codeVersion()
+{
+    foreach (array('TAG', 'REVISION') as $file) {
+        $path = $_SERVER['DOCUMENT_ROOT'].'/../'.$file;
+        if (file_exists($path)) {
+            $data = file($path);
+            if (count($data) >= 1) {
+                return $data[0];
+            }
+        }
+    }
+    $cmd = 'cd '.escapeshellarg($_SERVER['DOCUMENT_ROOT']).' && git log -1 --pretty=format:\'%h\'';
+    return shell_exec($cmd) . '-devel';
+}
