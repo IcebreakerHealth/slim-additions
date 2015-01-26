@@ -2,7 +2,8 @@
 /**
  * Global functions.
  *
- * If you're putting something in here you better have a damn good reason and the approval of all other PHP developers on the team.
+ * If you're putting something in here you better have a damn good reason
+ * and the approval of all other PHP developers on the team.
  */
 
 /**

@@ -37,12 +37,12 @@ class RouteGenerator
         return $this->app->delete($url, $this->action($controller, $action));
     }
 
-    private function default_conditions($conditions)
+    private function defaultConditions($conditions)
     {
         \Slim\Route::setDefaultConditions($conditions);
     }
 
-    public function load_routes()
+    public function loadRoutes()
     {
         include 'config/routes.php';
     }

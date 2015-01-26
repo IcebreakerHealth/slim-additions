@@ -38,9 +38,9 @@ class View extends \Slim\View
         return \Slim\Slim::getInstance()->urlFor($url, $params);
     }
 
-    protected function render_element($name, $params = array())
+    protected function renderElement($name, $params = array())
     {
-        print parent::render($this->get_element_name($name), $params);
+        print parent::render($this->getElementName($name), $params);
         return;
     }
 
@@ -51,7 +51,7 @@ class View extends \Slim\View
     public function getTemplatePathname($file)
     {
         foreach ($this->themes as $dir) {
-            $templateDirectory = $this->get_template_directory($dir, $file . '.php');
+            $templateDirectory = $this->getTemplateDirectory($dir, $file . '.php');
             if (is_file($templateDirectory)) {
                 return $templateDirectory;
             }
@@ -63,7 +63,7 @@ class View extends \Slim\View
      * Retrive the file name of an element.
      *@param $element_name  Name of the element you want to retrieve.
     */
-    protected function get_element_name($element_name)
+    protected function getElementName($element_name)
     {
         $template_names = explode('/', $element_name, 2);
         return "{$template_names[0]}/elements/{$template_names[1]}";
@@ -74,7 +74,7 @@ class View extends \Slim\View
      *@param $theme     Name of the theme.
      *@param $file      File path of the file from its theme's root directory.
     */
-    protected function get_template_directory($theme, $file)
+    protected function getTemplateDirectory($theme, $file)
     {
         return $this->templatesDirectory .
             DIRECTORY_SEPARATOR . $theme .
