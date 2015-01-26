@@ -13,7 +13,7 @@ class View extends \Slim\View
             $themes = array('.');
         }
         $this->themes = $themes;
-        $this->layout = "layouts/default.php";
+        $this->layout = "default";
     }
 
     public function setLayout($layout)
@@ -25,7 +25,7 @@ class View extends \Slim\View
     {
         $content = parent::render($template, $data);
         $data['content'] = $content;
-        return parent::render($this->layout, $data);
+        return parent::render('layouts/' . $this->layout, $data);
     }
 
     protected function h($text)
@@ -51,7 +51,7 @@ class View extends \Slim\View
     public function getTemplatePathname($file)
     {
         foreach ($this->themes as $dir) {
-            $templateDirectory = $this->get_template_directory($dir, $file);
+            $templateDirectory = $this->get_template_directory($dir, $file . '.php');
             if (is_file($templateDirectory)) {
                 return $templateDirectory;
             }
@@ -66,7 +66,7 @@ class View extends \Slim\View
     protected function get_element_name($element_name)
     {
         $template_names = explode('/', $element_name, 2);
-        return "/{$template_names[0]}/elements/{$template_names[1]}.php";
+        return "{$template_names[0]}/elements/{$template_names[1]}";
     }
 
     /**
