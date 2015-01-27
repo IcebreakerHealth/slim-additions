@@ -5,6 +5,7 @@ namespace SlimAdditions;
 class View extends \Slim\View
 {
     private $themes;
+    private $inherited_data;
 
     public function __construct($themes = null)
     {
@@ -21,8 +22,12 @@ class View extends \Slim\View
         $this->layout = $layout;
     }
 
-    protected function render($template, $data = null)
+    protected function render($template, $data = array())
     {
+        if ($data == null) {
+            $data = array();
+        }
+        $this->inherited_data = $data;
         $content = parent::render($template, $data);
         $data['content'] = $content;
         return parent::render('layouts/' . $this->layout, $data);
@@ -40,7 +45,10 @@ class View extends \Slim\View
 
     protected function renderElement($name, $params = array())
     {
-        print parent::render($this->getElementName($name), $params);
+        $previous_data = $this->inherited_data;
+        $this->inherited_data = array_merge($this->inherited_data, $params);
+        print parent::render($this->getElementName($name), $this->inherited_data);
+        $this->inherited_data = $previous_data;
         return;
     }
 
