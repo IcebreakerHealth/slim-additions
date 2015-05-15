@@ -46,9 +46,17 @@ class Controller
 
     protected function params($name = null)
     {
+        if ($this->app->request->getContentType() == "application/json") {
+            $data = json_decode($this->app->request()->getBody(), true);
+            if (is_null($name)) {
+                return $data;
+            } else {
+                return isset($data[$name]) ? $data[$name] : null;
+            }
+        }
+
         return $this->app->request->params($name);
     }
-
 
     protected function urlFor($name, $params = array())
     {
