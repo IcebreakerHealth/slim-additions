@@ -47,7 +47,8 @@ class Controller
     protected function params($name = null)
     {
         if ($this->app->request->getContentType() == "application/json") {
-            $data = json_decode($this->app->request()->getBody(), true);
+            $body = ($data = !is_null(json_decode($this->app->request()->getBody(), true)) ? $data : array());
+            $data = array_merge($body, $this->app->request->params());
             if (is_null($name)) {
                 return $data;
             } else {
