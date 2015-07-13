@@ -27,9 +27,19 @@ class RouteGenerator
         return $this->app->get($url, $this->action($controller, $action));
     }
 
+    private function patch($url, $controller, $action)
+    {
+        return $this->app->patch($url, $this->action($controller, $action));
+    }
+
     private function post($url, $controller, $action)
     {
         return $this->app->post($url, $this->action($controller, $action));
+    }
+
+    private function put($url, $controller, $action)
+    {
+        return $this->app->put($url, $this->action($controller, $action));
     }
 
     private function delete($url, $controller, $action)
