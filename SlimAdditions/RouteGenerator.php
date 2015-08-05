@@ -12,39 +12,49 @@ class RouteGenerator
         $this->app = $app;
     }
 
+    private function permissions($controller_name, $method)
+    {
+        if (!isset($this->permissions_cache[$controller_name])) {
+            $class_name = "\\App\\Permissions\\" . $controller_name;
+            $this->permissions_cache[$controller_name] = new $class_name($this->app);
+        }
+
+        return array($this->permissions_cache[$controller_name], "check");
+    }
+
     private function action($controller_name, $method)
     {
         if (!isset($this->controller_cache[$controller_name])) {
             $class_name = '\\App\\Controllers\\' . $controller_name;
             $this->controller_cache[$controller_name] = new $class_name($this->app);
         }
-        $controller = $this->controller_cache[$controller_name];
-        return array($controller, $method);
+
+        return array($this->controller_cache[$controller_name], $method);
     }
 
     private function get($url, $controller, $action)
     {
-        return $this->app->get($url, $this->action($controller, $action));
+        return $this->app->get($url, $this->permissions($controller, $action), $this->action($controller, $action));
     }
 
     private function patch($url, $controller, $action)
     {
-        return $this->app->patch($url, $this->action($controller, $action));
+        return $this->app->patch($url, $this->permissions($controller, $action), $this->action($controller, $action));
     }
 
     private function post($url, $controller, $action)
     {
-        return $this->app->post($url, $this->action($controller, $action));
+        return $this->app->post($url, $this->permissions($controller, $action), $this->action($controller, $action));
     }
 
     private function put($url, $controller, $action)
     {
-        return $this->app->put($url, $this->action($controller, $action));
+        return $this->app->put($url, $this->permissions($controller, $action), $this->action($controller, $action));
     }
 
     private function delete($url, $controller, $action)
     {
-        return $this->app->delete($url, $this->action($controller, $action));
+        return $this->app->delete($url, $this->permissions($controller, $action), $this->action($controller, $action));
     }
 
     private function defaultConditions($conditions)
