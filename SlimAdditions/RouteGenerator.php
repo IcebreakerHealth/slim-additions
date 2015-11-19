@@ -67,8 +67,8 @@ class RouteGenerator
         \Slim\Route::setDefaultConditions($conditions);
     }
 
-    public function loadRoutes()
+    public function loadRoutes($path = 'config/routes.php')
     {
-        include 'config/routes.php';
+        include $path;
     }
 }
