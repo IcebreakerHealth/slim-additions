@@ -1,5 +1,5 @@
 {
-    "name": "bluerock-solutions/slim-additions",
+    "name": "icebreakerhealth/slim-additions",
     "type": "library",
     "description": "Add controller classes, etc to Slim Framework",
     "keywords": ["microframework","rest","router"],
